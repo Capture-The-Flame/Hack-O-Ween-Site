@@ -1,0 +1,205 @@
+/* Fullscreen black overlay */
+.ChallengeFlow {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: auto;
+    text-align: center;
+    opacity: 1;
+}
+
+/* corner gifs pinned to the viewport */
+.corner {
+  position: fixed;          /* sticks to the screen, not the content */
+  width: clamp(64px, 10vw, 140px);  /* responsive size */
+  pointer-events: none;      /* don’t block clicks */
+  z-index: 10;
+  opacity: .95;
+}
+
+.corner--tl { top: calc(12px + env(safe-area-inset-top)); left: calc(12px + env(safe-area-inset-left)); }
+.corner--tr { top: calc(12px + env(safe-area-inset-top)); right: calc(12px + env(safe-area-inset-right)); }
+.corner--bl { bottom: calc(12px + env(safe-area-inset-bottom)); left: calc(12px + env(safe-area-inset-left)); }
+.corner--br { bottom: calc(1px + env(safe-area-inset-bottom)); right: calc(12px + env(safe-area-inset-right)); width: clamp(130px, 10vw, 180px);}
+
+@media (prefers-reduced-motion: reduce) {
+  .corner { animation: none !important; }
+}
+
+.challenge-root {
+  min-height: 100vh;     
+  color: #e5e7eb;        
+  padding: 2rem 1rem;   
+  line-height: 1.55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-gif {
+    position: relative;
+    padding-top: 6.5rem;
+    text-align: center;
+}
+
+.kitty-gif-icon {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(100px, 30vw, 100px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.challenge-title {
+    font-family: "Creepster";
+    margin-top: -3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.challenge-prompt {
+    font-family: "Underdog";
+}
+
+.challenge-input-box {
+    min-height: 5vh;
+    min-width: 20vh;
+    font-family: "Creepster";
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.challenge-button {
+    font-family: "Creepster";
+}
+
+.jumpscare-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: grid;
+  place-items: center;
+  z-index: 99999;
+  animation: jumpscare-fade-in 120ms ease-out;
+}
+.jumpscare-media {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;       /* fill the screen without distortion */
+  display: block;
+}
+@keyframes jumpscare-fade-in { from { opacity: 0 } to { opacity: 1 } }
+
+.j-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: start end;
+  padding: 2rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: clamp(28px, 6vw, 64px);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,.6), 0 0 14px rgba(0,0,0,0);
+  pointer-events: none;
+  font-family: "Creepster";
+}
+
+/* Full overlay */
+.maze-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: #000;
+  display: grid; place-items: center;
+}
+
+.maze-frame { color:#eee; padding:16px; border-radius:12px; width:min(90vw, 520px); }
+.maze-head { font-weight: 700; }
+.maze-tip  { opacity:.85; margin-top:4px; }
+
+.maze-board {
+  position: relative;
+  margin-top: 10px;
+  background: #000;
+  width: 100%; 
+  aspect-ratio: 520/280;
+  border: 4px solid #fff;
+  overflow: hidden;
+}
+
+/* Flag sizing (fixed but responsive) */
+:root { --flag-w: 70px; --flag-h: 40px; --flag-radius: 12px; }
+
+@media (max-width: 640px), (hover: none) {
+  :root { --flag-w: 112px; --flag-h: 50px; }
+}
+
+/* Shared look for START/GOAL (non-button labels) */
+.maze-flag{
+  position: absolute;
+  z-index: 4;
+  width: var(--flag-w);
+  height: var(--flag-h);
+  display: flex; align-items: center; justify-content: center;
+  background: #EB6123;          /* your orange */
+  color: #001018;
+  font-weight: 800;
+  font-family: "Creepster", system-ui, sans-serif;
+  letter-spacing: .04em;
+  border-radius: var(--flag-radius);
+  user-select: none;
+  pointer-events: auto;          /* must be hoverable */
+  transform: translate(-50%, -50%);  /* center on anchor */
+}
+
+/* Anchors (percent; keep them where you had them) */
+.maze-start { left: 11%;  top: 11%; }
+.maze-goal  { left: 88%;  top: 88%; cursor: pointer; }
+
+
+.maze-start { background:#EB6123; color:#001018; }  
+.maze-goal  { background:#EB6123; color:#fff; }    
+
+.safe { position:absolute; z-index:3; background: #9741A3; pointer-events:auto; }
+
+.safe-h.s1 { left: 16.35%; top: 6.79%;  width: 35%;   height: 8.57%; }
+.safe-v.s2 { left: 47%;    top: 6.79%;  width: 4.62%; height: calc(70% - 22%); }
+.safe-h.s3 { left: 9.23%;  top: 46.79%; width: 42.31%; height: 8.57%; }          
+.safe-v.s4 { left: 9.23%;  top: 46.79%; width: 4.62%;  height: 40%; }            
+.safe-h.s5 { left: 9.23%;  top: 78.57%; width: 59%;    height: 8.57%; }
+.safe-v.s6 { left: 64%;    top: 7.14%; width: 4.62%;  height: calc(80%); } 
+.safe-h.s7 { left: 64%; top: 7.14%;  width: 26%;   height: 8.57%; }
+.safe-v.s8 { left: 86%;    top: 7.14%; width: 4.62%;  height: calc(75%); } 
+
+/* WALLS (visual only) — match the SAFE geometry */
+.maze-wall { position:absolute; z-index:2; background: rgba(255,0,0,0.001); outline: #EB6123; border-radius:6px; }
+
+.maze-wall.w1 { left: 16.35%; top: 6.79%;  width: 35%;   height: 8.57%; }
+.maze-wall.w2 { left: 47%;    top: 6.79%;  width: 4.62%; height: calc(70% - 22%); }
+.maze-wall.w3 { left: 9.23%;  top: 46.79%; width: 42.31%; height: 8.57%; }
+.maze-wall.w4 { left: 9.23%;  top: 46.79%; width: 4.62%;  height: 40%; }
+.maze-wall.w5 { left: 9.23%;  top: 78.57%; width: 60%;    height: 8.57%; }
+.maze-wall.w6 { left: 64%;    top: 7.14%; width: 4.62%;  height: calc(80%); } /* 132px→47.14% */
+.maze-wall.w7 { left: 64%; top: 7.14%;  width: 27%;   height: 8.57%; }
+.maze-wall.w8 { left: 86%;    top: 7.14%; width: 4.62%;  height: calc(75%); } /* 132px→47.14% */
+
+.link {
+  font-family: "Underdog";
+  padding-bottom: 10px;
+}
+
+.error-message {
+  font-family: "Underdog";
+  padding-bottom: 10px;
+}
+
+.help-button {
+  font-family: "Creepster";
+  margin-top: 2rem;
+  background-color: transparent;
+}

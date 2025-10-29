@@ -1,0 +1,61 @@
+/* Fullscreen black overlay */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  opacity: 1;
+}
+
+/* Fade the whole overlay out at the end */
+.intro-overlay.fadeout {
+  transition: opacity 500ms ease;
+  opacity: 0;
+}
+
+/* Centered text container */
+.intro-inner {
+  color: #fff;
+  text-align: center;
+  padding: 24px;
+  font-family: "Creepster";
+}
+
+/* Base line styles + default hidden for animation */
+.intro-line {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(0.25em);
+  transition: opacity 400ms ease, transform 400ms ease;
+  will-change: opacity, transform;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+/* “WiCyS presents…” (smaller) */
+.intro-line.present {
+  color: #9741A3;
+  font-size: clamp(30px, 4vw, 48px);
+}
+
+/* “Hack-O-Ween” (big) */
+.intro-line.title {
+  color: #EB6123;
+  font-size: clamp(48px, 12vw, 20rem);
+}
+
+/* Make a line visible (fade + slide up) */
+.intro-line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay.fadeout,
+  .intro-line {
+    transition: none;
+  }
+}
