@@ -313,7 +313,7 @@ const DEMO_CHALLENGES: Challenge[] = [
     title: "Challenge 1 — OSINT",
     prompt:
       "Here's a fun one! Do you know your Halloween fun facts?! Click on this link and answer all our trivia to get the flag :) !",
-    downloadUrl: "https://capture-the-flame.github.io/Hack-O-Ween/Spooky_Hunt/spooky_hunt.html",
+    downloadUrl: "https://capture-the-flame.github.io/Spooky_Hunt/",
     expectedHash: "73f9b916de0c603f404095a815591c2e0bc522ed22518f086b35523f8815cda1",
     scare: { enabled: false, probability: 1.0, durationMs: 1000, imageUrl: asset("gifs/s.gif"), soundUrl: asset("gifs/s.mp3") },
   },
