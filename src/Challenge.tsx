@@ -345,7 +345,7 @@ const DEMO_CHALLENGES: Challenge[] = [
   { id: 5, 
     title: "Challenge 5 — Forensics", 
     prompt: "We recovered this footage from a cult group that vacated a lot in the city. We watched it over hundreds of times and cannot find out what it means.",
-    downloadUrl: "/zips/Found_Footage.mp4", 
+    downloadUrl: "/zips/Found_Footage.zip", 
     downloadName: "Cult Video", 
     helpPdfUrl: "/help/Found_Footage.pdf",
     expectedHash: "cd893fc0e35bc788f5a5963ca4327b51389a445aeb59785c10a507cbfb2745a7" 
