@@ -1,6 +1,6 @@
 // App.tsx
-import React, { useEffect, useMemo, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useSearchParams } from "react-router-dom";
 import IntroOverlay from "./Intro";
 import ChallengeFlow, {STORAGE_KEY} from "./Challenge";
 import "./intro.css";

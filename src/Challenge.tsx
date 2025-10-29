@@ -376,20 +376,6 @@ function saveState(s: StoredState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 }
 
-// ========= UI helpers =========
-function classNames(...xs: Array<string | false | null | undefined>) {
-  return xs.filter(Boolean).join(" ");
-}
-
-function Progress({ current, total }: { current: number; total: number }) {
-  const ratio = Math.max(0, Math.min(1, current / total));
-  return (
-    <div className="w-full h-3 bg-gray-200 rounded-xl overflow-hidden shadow-inner">
-      <div className="h-full bg-emerald-500 transition-all" style={{ width: `${ratio * 100}%` }} />
-    </div>
-  );
-}
-
 function MazeGateOverlay({
   show,
   onWin,
@@ -585,7 +571,7 @@ function JumpscareOverlay({
 export default function ChallengeFlow({
   challenges = DEMO_CHALLENGES,
   globalScare = { enabled: true, probability: 0.25, durationMs: 1400, imageUrl: asset("assets/scare-default.png") },
-  onRequestReset,
+
 }: {
   challenges?: Challenge[];
   /** default scare config used when challenge.scare is undefined */
@@ -598,7 +584,7 @@ export default function ChallengeFlow({
   const [index, setIndex] = useState<number>(initial?.index ?? 0);
   const [answers, setAnswers] = useState<Record<number, string>>(initial?.answers ?? {});
   const [solved, setSolved] = useState<Record<number, boolean>>(initial?.solved ?? {});
-  const [muted, setMuted] = useState<boolean>(initial?.muted ?? false);
+  const [muted] = useState<boolean>(initial?.muted ?? false);
   const [showMaze, setShowMaze] = useState(false);
   const [scareFired, setScareFired] = useState<Record<number, boolean>>({});
   const [showSuccessVideo, setShowSuccessVideo] = useState(false);
@@ -606,7 +592,6 @@ export default function ChallengeFlow({
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [proof, setProof] = useState<string | null>(null);
 
   const [showScare, setShowScare] = useState(false);
   const current = challenges[index];
@@ -708,15 +693,11 @@ export default function ChallengeFlow({
         return;
       }
 
-      setProof(null);
       if (index < total - 1) setIndex(index + 1);
     } finally {
       setSubmitting(false);
     }
   }
-
-  function goPrev() { setIndex((i) => Math.max(0, i - 1)); }
-  function goNext() { setIndex((i) => Math.min(total - 1, i + 1)); }
 
   function resetAll() {
     localStorage.removeItem(STORAGE_KEY);
@@ -724,13 +705,6 @@ export default function ChallengeFlow({
     setAnswers({});
     setSolved({});
     setError(null);
-    setProof(null);
-  }
-
-  async function computeProof() {
-    const orderedAnswers = challenges.map((c) => answers[c.id] ?? "");
-    const code = await makeCompletionCode(orderedAnswers);
-    setProof(code);
   }
 
   return (
