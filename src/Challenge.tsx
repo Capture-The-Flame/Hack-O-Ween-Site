@@ -287,19 +287,22 @@ function isSameOrigin(url: string) {
 }
 
 function linkPropsFor(url: string, downloadName?: string) {
+  const openInNewTab = { target: "_blank", rel: "noopener noreferrer" as const };
+
   if (isSameOrigin(url)) {
-  // local or same-origin file → use download
+    // same-origin file → download, but in a NEW TAB so the SPA stays put
     return {
       href: url,
       label: `Download ${downloadName || "file"}`,
-      extra: { download: downloadName }, // browser decides filename
+      extra: { download: downloadName, ...openInNewTab },
     } as const;
   }
-  // external site → open in new tab, no download
+
+  // external site → open new tab
   return {
     href: url,
     label: "Visit website",
-    extra: { target: "_blank", rel: "noopener noreferrer" },
+    extra: openInNewTab,
   } as const;
 }
 
@@ -312,6 +315,7 @@ const DEMO_CHALLENGES: Challenge[] = [
       "Here's a fun one! Do you know your Halloween fun facts?! Click on this link and answer all our trivia to get the flag :) !",
     downloadUrl: "https://capture-the-flame.github.io/Hack-O-Ween/Spooky_Hunt/spooky_hunt.html",
     expectedHash: "73f9b916de0c603f404095a815591c2e0bc522ed22518f086b35523f8815cda1",
+    scare: { enabled: false, probability: 1.0, durationMs: 1000, imageUrl: asset("gifs/s.gif"), soundUrl: asset("gifs/s.mp3") },
   },
   {
     id: 2,
@@ -329,6 +333,7 @@ const DEMO_CHALLENGES: Challenge[] = [
     downloadUrl: "https://capture-the-flame.github.io/Domonic_Themonics/", 
     expectedHash: "d65957fde942d7effc1eaa0758ad624a83a2aa901cb05791a0ba60b62f68b950",
     helpPdfUrl: asset("help/Domonic_Themonics.pdf"),
+    scare: { enabled: false, probability: 1.0, durationMs: 1000, imageUrl: asset("gifs/s.gif"), soundUrl: asset("gifs/s.mp3") },
   },
   { id: 4, 
     title: "Challenge 4 — Forensics",
@@ -345,7 +350,8 @@ const DEMO_CHALLENGES: Challenge[] = [
     downloadUrl: asset("zips/Found_Footage.mp4"), 
     downloadName: "Cult Video", 
     helpPdfUrl: asset("help/Found_Footage.pdf"),
-    expectedHash: "cd893fc0e35bc788f5a5963ca4327b51389a445aeb59785c10a507cbfb2745a7" 
+    expectedHash: "cd893fc0e35bc788f5a5963ca4327b51389a445aeb59785c10a507cbfb2745a7",
+    scare: {enabled: false,  probability: 1.0, imageUrl: asset("gifs/ominous.gif"), soundUrl: asset("gifs/ominous.mp3"), durationMs: 8000, overlayText: "You got lucky...this time."},
   },
   { id: 6, 
     title: "Challenge 6 — Cryptography", 
