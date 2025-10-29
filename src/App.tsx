@@ -6,8 +6,9 @@ import ChallengeFlow, {STORAGE_KEY} from "./Challenge";
 import "./intro.css";
 import "./Challenge.css";
 import "./Congrats.css"
+import { asset } from "./asset";
 
-import dancing from "./cuteGifs/dancingPumpkin.gif";
+const dancing = asset("cuteGifs/dancingPumpkin.gif");
 
 function toCentralWithMs(input: string | number) {
   const d = new Date(input);
@@ -63,7 +64,7 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       {!done && <IntroOverlay onDone={() => setDone(true)} />}
       <Routes>
         <Route

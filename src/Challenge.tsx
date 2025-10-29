@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import kittyGif from "./cuteGifs/kitty.gif";
-import twoGhosts from "./cuteGifs/two ghosts.gif";
-import ghost from "./cuteGifs/ghost.gif";
-import explodingPumpkin from "./cuteGifs/exploding pumpkin.gif";
-import pumpkinCat from "./cuteGifs/pumpkinCat.gif";
+import { asset } from "./asset";
+const kittyGif = asset("cuteGifs/kitty.gif");
+const twoGhosts = asset("cuteGifs/two ghosts.gif");
+const pumpkinCat = asset("cuteGifs/pumpkinCat.gif");
 
 
 
@@ -78,26 +77,24 @@ function SuccessVideoOverlay({
 
   React.useEffect(() => { setMounted(true); }, []);
 
-  // Make visible pre-paint to avoid top-left flash
+  // make visible pre-paint to avoid top-left flash
   React.useLayoutEffect(() => {
     setVisible(!!show);
     if (!show) setReady(false);
   }, [show]);
 
-  // Start + keep playing (no pause allowed)
+  // start + keep playing (no pause allowed)
   React.useLayoutEffect(() => {
     const v = vref.current;
     if (!show || !v) return;
 
-    // Hard-disable UI affordances
+    
     v.controls = false;
-    // @ts-ignore: not in TS lib DOM yet on some targets
     v.disablePictureInPicture = true;
-    // @ts-ignore
     v.disableRemotePlayback = true;
 
     v.currentTime = 0;
-    v.muted = false;   // should be ok right after a user gesture (submit)
+    v.muted = false;   
     v.volume = 1;
 
     const play = () => v.play().catch(() => {});
@@ -106,7 +103,7 @@ function SuccessVideoOverlay({
 
     play();
 
-    // If anything pauses/seeks, immediately resume
+    
     v.addEventListener("pause", preventPause);
     v.addEventListener("seeking", preventSeek);
     v.addEventListener("ratechange", preventPause);
@@ -291,14 +288,14 @@ function isSameOrigin(url: string) {
 
 function linkPropsFor(url: string, downloadName?: string) {
   if (isSameOrigin(url)) {
-  // Local or same-origin file → use download
+  // local or same-origin file → use download
     return {
       href: url,
       label: `Download ${downloadName || "file"}`,
       extra: { download: downloadName }, // browser decides filename
     } as const;
   }
-  // External site → open in new tab, no download
+  // external site → open in new tab, no download
   return {
     href: url,
     label: "Visit website",
@@ -306,7 +303,7 @@ function linkPropsFor(url: string, downloadName?: string) {
   } as const;
 }
 
-// ========= Demo data (replace with your real 6 challenges) =========
+//challenges
 const DEMO_CHALLENGES: Challenge[] = [
   {
     id: 1,
@@ -320,44 +317,44 @@ const DEMO_CHALLENGES: Challenge[] = [
     id: 2,
     title: "Challenge 2 — Reverse Engineering",
     prompt: "There are rumors of a new and strange place that was in this abandoned office building. I went to check it out and was completely shocked. I don’t know how I found my way out. Can you look at this simulation and figure out how to traverse the facility?",
-    downloadUrl: "/zips/LinkedRoom.zip",
+    downloadUrl: asset("zips/LinkedRoom.zip"),
     downloadName: "LinkedRooms.zip",
     expectedHash: "2e32c2198d534506188009d693636ff1096cba64d63864c13cd1e43e464dad44",
-    scare: { enabled: true, probability: 1.0, durationMs: 1000, imageUrl: "/gifs/s.gif", soundUrl: "/gifs/s.mp3" },
-    helpPdfUrl: "/help/LinkedRooms.pdf",
+    scare: { enabled: true, probability: 1.0, durationMs: 1000, imageUrl: asset("gifs/s.gif"), soundUrl: asset("gifs/s.mp3") },
+    helpPdfUrl: asset("help/LinkedRooms.pdf"),
   },
   { id: 3, 
     title: "Challenge 3 — Web Exploit", 
     prompt: "There’s this new website out now that I have been looking at. I looked on reddit and it seems to be a crappy site that doesn’t work. But..There was a weird thing that someone noticed. There are invisible attributes of the site. Can you see if there’s something important inside the site?", 
     downloadUrl: "https://capture-the-flame.github.io/Domonic_Themonics/", 
     expectedHash: "d65957fde942d7effc1eaa0758ad624a83a2aa901cb05791a0ba60b62f68b950",
-    helpPdfUrl: "/help/Domonic_Themonics.pdf",
+    helpPdfUrl: asset("help/Domonic_Themonics.pdf"),
   },
   { id: 4, 
     title: "Challenge 4 — Forensics",
     prompt: "We intercepted this transmission being recorded. We have no idea what it means or how it got recorded. We are trying to figure out what's going on and if there is something embedded in it?", 
-    downloadUrl: "/zips/Intercepted_Transmission.wav", 
+    downloadUrl: asset("zips/Intercepted_Transmission.wav"), 
     downloadName: "Intercepted Transmission", 
     expectedHash: "892b6b264d0732cc051f5d847e2c4486a8cd70e3b92b6205c3641e811ee5e3c7",
-    helpPdfUrl: "/help/Intercepted_Transmission.pdf",
-    scare: {enabled: true,  probability: 1.0, imageUrl: "/gifs/ominous.gif", soundUrl: "/gifs/ominous.mp3", durationMs: 8000, overlayText: "You got lucky...this time."},
+    helpPdfUrl: asset("help/Intercepted_Transmission.pdf"),
+    scare: {enabled: true,  probability: 1.0, imageUrl: asset("gifs/ominous.gif"), soundUrl: asset("gifs/ominous.mp3"), durationMs: 8000, overlayText: "You got lucky...this time."},
   },
   { id: 5, 
     title: "Challenge 5 — Forensics", 
     prompt: "We recovered this footage from a cult group that vacated a lot in the city. We watched it over hundreds of times and cannot find out what it means.",
-    downloadUrl: "/zips/Found_Footage.mp4", 
+    downloadUrl: asset("zips/Found_Footage.mp4"), 
     downloadName: "Cult Video", 
-    helpPdfUrl: "/help/Found_Footage.pdf",
+    helpPdfUrl: asset("help/Found_Footage.pdf"),
     expectedHash: "cd893fc0e35bc788f5a5963ca4327b51389a445aeb59785c10a507cbfb2745a7" 
   },
   { id: 6, 
     title: "Challenge 6 — Cryptography", 
     prompt: "An expedition team out in the desert found an ancient tablet that had some sort of unrecognized ancient language. The team has spent months trying to decipher it but has made minimal progress. Every time someone comes close they go missing. I’m thinking that figuring out the text can help us get them back! I’ve attached their research here to give you a head start! Please help us..",
-    downloadUrl: "/zips/Ruined_Language.zip", 
+    downloadUrl: asset("zips/Ruined_Language.zip"),
     downloadName: "Ruined_Language.zip", 
     expectedHash: "3f585391c0e52381b47a1067f7681610318e0772e81306009c180655645a6d9c",
-    helpPdfUrl: "/help/Ruined_Language.pdf",
-    scare: {enabled: true, probability: 1, mazeGate: true, imageUrl: "/gifs/s2.gif", soundUrl: "/gifs/s2.mp3", durationMs: 1000 }, 
+    helpPdfUrl: asset("help/Ruined_Language.pdf"),
+    scare: {enabled: true, probability: 1, mazeGate: true, imageUrl: asset("gifs/s2.gif"), soundUrl: asset("gifs/s2.mp3"), durationMs: 1000 }, 
   },
 ];
 
@@ -418,20 +415,20 @@ function MazeGateOverlay({
   if (!show) return null;
 
   const armRun = () => {
-    // Only START can arm a run
+    // only START can arm a run
     startedRef.current = true;
     failedRef.current  = false;
     wonRef.current     = false;
   };
 
   const failRun = () => {
-    // Only fail an active run (after START, before GOAL)
+    // only fail an active run (after START, before GOAL)
     if (startedRef.current && !wonRef.current) {
       failedRef.current = true;
     }
   };
 
-  // Any move not over a "safe" element fails an armed run
+  // any move not over a "safe" element fails an armed run
   const onBoardMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!startedRef.current || wonRef.current) return;
     const el = e.target as HTMLElement;
@@ -440,7 +437,7 @@ function MazeGateOverlay({
   };
 
   const tryWin = () => {
-    // You can only win if you started at START and never failed
+    // you can only win if you started at START and never failed
     if (startedRef.current && !failedRef.current && !wonRef.current) {
       wonRef.current = true;
       onWin();
@@ -525,17 +522,17 @@ function JumpscareOverlay({
 
   useEffect(() => {
     if (!show) return;
-    // Auto hide after duration
+    // auto hide after duration
     const dur = config?.durationMs ?? 1500;
     timeoutRef.current = window.setTimeout(() => onDone(), dur);
 
-    // Try to play audio once (user just clicked submit so gesture exists)
+    // try to play audio once
     if (!muted && config?.soundUrl) {
       const a = new Audio(config.soundUrl);
       audioRef.current = a;
       a.play().catch(() => {});
     }
-    // Try to play video (must be muted to autoplay reliably on mobile)
+    // try to play video 
     if (config?.videoUrl && videoRef.current) {
       const v = videoRef.current;
       v.currentTime = 0;
@@ -587,7 +584,7 @@ function JumpscareOverlay({
 // ========= Main Component =========
 export default function ChallengeFlow({
   challenges = DEMO_CHALLENGES,
-  globalScare = { enabled: true, probability: 0.25, durationMs: 1400, imageUrl: "/assets/scare-default.png" },
+  globalScare = { enabled: true, probability: 0.25, durationMs: 1400, imageUrl: asset("assets/scare-default.png") },
   onRequestReset,
 }: {
   challenges?: Challenge[];
@@ -630,7 +627,6 @@ export default function ChallengeFlow({
     setAnswers((prev) => ({ ...prev, [current.id]: v }));
   }
 
-  // Decide whether to trigger a scare on wrong answer
   function maybeScare() {
     const cfg = current.scare ?? globalScare;
     if (!cfg?.enabled) return;
@@ -700,7 +696,7 @@ export default function ChallengeFlow({
         const finishedAtIso = new Date(finishedAtMs).toISOString();
 
         try {
-          const a = new Audio("/gifs/Andrew Gold - Spooky, Scary Skeletons - Undead Tombstone Remix.mp3");
+          const a = new Audio(asset("gifs/Andrew Gold - Spooky, Scary Skeletons - Undead Tombstone Remix.mp3"));
           a.preload = "auto";
           a.play().catch(() => {});
         } catch {}
@@ -785,7 +781,7 @@ export default function ChallengeFlow({
                 />
 
                 {error && <div className="error-message">{error}</div>}
-                {solved[current.id] && <div className="mt-3 text-sm text-emerald-700">✅ Correct! You can proceed to the next challenge.</div>}
+                {solved[current.id] && <div className="mt-3 text-sm text-emerald-700">Correct! You can proceed to the next challenge.</div>}
 
                 <div className="challenge-button">
                     <button
@@ -795,7 +791,7 @@ export default function ChallengeFlow({
                     >
                     {solved[current.id] ? "Re‑check" : submitting ? "Checking…" : "Submit"}
                     </button>
-                    {/* Navigation is gated: no Back/Next buttons */}
+                    {/* navigation is gated: no Back/Next buttons */}
                 </div>
                 </form>
 
@@ -828,7 +824,7 @@ export default function ChallengeFlow({
         />
 
         <SuccessVideoOverlay
-          src="/gifs/CouragTheDog.mp4"   
+          src={asset("gifs/CouragTheDog.mp4")} 
           show={showSuccessVideo}
           onDone={() => setShowSuccessVideo(false)}
         />
