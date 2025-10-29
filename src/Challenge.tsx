@@ -705,13 +705,6 @@ export default function ChallengeFlow({
     }
   }
 
-  function resetAll() {
-    localStorage.removeItem(STORAGE_KEY);
-    setIndex(0);
-    setAnswers({});
-    setSolved({});
-    setError(null);
-  }
 
   return (
     <div className="ChallengeFlow">
@@ -746,7 +739,6 @@ export default function ChallengeFlow({
                     </div>
                   );
                 })()}
-                <button onClick={resetAll} className="text-sm px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-white active:scale-[.99]">Reset</button>
 
                 <form onSubmit={onSubmit} className="mt-6">
                 <input
